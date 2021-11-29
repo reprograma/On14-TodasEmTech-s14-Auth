@@ -57,7 +57,7 @@ const login = (req, res) => {
     const token = jwt.sign({ email: req.body.email }, SECRET);
 
 
-    return res.status(200).send(`Tudo certo, nada errado.`)
+    return res.status(200).send({"message": "Tudo certo, nada errado.", token})
 
   })  
 }
