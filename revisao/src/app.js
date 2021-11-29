@@ -11,7 +11,7 @@ const dotenv = require("dotenv")
 
 //requerindo routes
 const users = require('./routes/user')
-const { getAll } = require("./controllers/user")
+
 
 // utilizando 
 const app = express()
@@ -23,7 +23,7 @@ app.use(express.json())
 dotenv.config()
 
 /*rotas*/
-app.use('/api/users', getAll)
+app.use('/api/users', users)
 
 //exportando  o app
 database.connect()
