@@ -4,18 +4,21 @@ const dotenv = require('dotenv')
 
 const database = require('./database/config')
 
+const users = require('./routes/user')
+
+const tarefas = require('./routes/tarefas')
+
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 
+/* rotas Principal*/
+app.use('/api/users', users)
+app.use('/api/tarefas', tarefas)
+
 dotenv.config()
 
-app.get('/', (req, res) => {
-    res.status(200).json({
-        mensagem: "Deu bom."
-    })
-})
 
 database.connect()
 
