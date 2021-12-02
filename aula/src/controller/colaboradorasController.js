@@ -1,16 +1,32 @@
-const colaboradoras = require("../models/colaboradoras")
+const colaboradoras = require("../models/colaboradoras");
+const SECRET = process.env.SECRET;
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 
 
 const getAll = (req, res) => {
-  console.log(req.url);
+  const authHeader = req.get('authorization');
+  const token = authHeader.split(' ')[1];
+  console.log('Meu header:', token);
+  if (!authHeader) {
+    return res.status(401).send('erro no header');
+  }
+  jwt.verify(token, SECRET, function(erro) {
+    if (erro) {
+      return res.status(403).send('Não autorizado');
+    }
+
     colaboradoras.find(function (err, colaboradoras){
       res.status(200).send(colaboradoras)
     })     
+  })
 };
 
+
 const postColaboradora = (req, res) => {
-  console.log(req.body);
+  const senhaHash = bcrypt.hashSync(request, body, senha, 10)
+  req.body.password = senhaHash
 
   let colaboradora = new colaboradoras(req.body);
     colaboradora.save(function(err){
@@ -20,10 +36,38 @@ const postColaboradora = (req, res) => {
   })
 };
 
+const login = (req, res) => {
+  const { email, password } = req.body;
+  try {
+      const colaboradora =  colaboradoras.findOne({ email: email })
 
+      if (!colaboradora) {
+          return res.status(404).send({ message: "Email inválido" })
+      }
+      const checkPassword =  bcrypt.compare(password, colaboradora.password)
+
+      if (!checkPassword) {
+          return res.status(404).send({ message: "Senha inválida!" })
+      }
+
+
+      const token = jwt.sign({ name:colaboradora.name }, SECRET);
+
+      res.status(200).json({
+          message: "Acesso validado.",
+          token
+      })
+
+  } catch (error) {
+      res.status(500).json({
+          message: error.message
+      })
+  }
+}
 
 
 module.exports = {
     getAll,
     postColaboradora,
+    login
 }
