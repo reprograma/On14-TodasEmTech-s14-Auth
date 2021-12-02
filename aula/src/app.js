@@ -1,12 +1,12 @@
+require('dotenv-safe').config();
 const express = require("express")
-const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 
 
 const app = express()
-
+const MONGODB_URI = process.env.MONGODB_URI
 //String de conexão
-mongoose.connect("mongodb://localhost:27017/reprograma",  {
+mongoose.connect(MONGODB_URI,  {
      useNewUrlParser: true,
      useUnifiedTopology: true
 });
@@ -24,11 +24,11 @@ db.once("open", function (){
 //rotas
 const index = require("./routes/index")
 const colaboradoras = require("./routes/colaboradoras")
+const tarefa = require("./routes/tarefa")
 
 
-//configurar body parser
-app.use(bodyParser.json())
-// app.use(express.json()); - Podemos usar a propria função de parser de json do express, sem a necessidade de instalar o body parser
+
+ app.use(express.json())
 
 
 app.use(function (req, res, next) {
@@ -43,5 +43,6 @@ app.use(function (req, res, next) {
 
 app.use("/", index)
 app.use("/colaboradoras", colaboradoras)
+app.use("tarefa", tarefa)
 
 module.exports = app
