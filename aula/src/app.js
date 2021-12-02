@@ -1,4 +1,4 @@
-require('dontenv-safe').config();
+require('dotenv-safe').config();
 const express = require("express")
 const mongoose = require("mongoose")
 
