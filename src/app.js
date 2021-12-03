@@ -1,3 +1,4 @@
+require('dotenv-safe').config();
 const express = require("express")
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
@@ -6,10 +7,12 @@ const mongoose = require("mongoose")
 const app = express()
 
 //String de conexão
-mongoose.connect("mongodb://localhost:27017/reprograma",  {
+mongoose.connect(process.env.MONGODB_URL),  {
      useNewUrlParser: true,
      useUnifiedTopology: true
-});
+};
+
+const secret = process.env.SECRET;
 
 //Conexão com o mongo
 let db = mongoose.connection;
@@ -24,6 +27,7 @@ db.once("open", function (){
 //rotas
 const index = require("./routes/index")
 const colaboradoras = require("./routes/colaboradoras")
+const tarefas = require("./routes/tarefasRoutes")
 
 
 //configurar body parser
@@ -43,5 +47,6 @@ app.use(function (req, res, next) {
 
 app.use("/", index)
 app.use("/colaboradoras", colaboradoras)
+app.use("/tarefas", tarefas)
 
 module.exports = app
