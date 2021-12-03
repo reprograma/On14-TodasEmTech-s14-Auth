@@ -1,6 +1,5 @@
 ## Turma Online 14 - Todas em Tech | Back-end | 2021 | Semana 15: Autenticação e Testes
 
-Olá, sejam bem-vindas a aula de autenticação e segurança! Meu nome é Tereza Oliveira (@Tereza25), e irei acompanhar vocês nessa semana.
 
 ### Vamos preparar o ambiente!
 

@@ -16,6 +16,3 @@ const colaboradorasSchema = new mongoose.Schema({
 const colaboradoras = mongoose.model('colaboradoras', colaboradorasSchema);
 
 module.exports = colaboradoras;
-
-
-
