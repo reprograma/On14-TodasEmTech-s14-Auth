@@ -1,26 +1,38 @@
-const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
-const User = require("../models/User")
-const { hashPassword } = require("../helpers/auth")
+const User = require('../models/User');
+const { hashPassword } = require('../helpers/auth')
 
-
-
-
-const getAll = async (req, res) => {
+//sem rota privada
+const getAll = async(req, res) => {
     try {
-        const All = await User.find()
-        res.status(200).json({ messagem: "Lista de todos os Usuários:", All })
+        const users = await User.find()
+        res.status(200).json({ messagem: "Lista de pessoas", users })
     } catch (error) {
         res.status(500).json({
-            message: console.error.message
+            message: error.message
         })
     }
-
 }
 
-const register = async (req, res) => {
+//com rota privada
+const getUsers = async(req, res) => {
+    //passar o id por parametro
+    const id = req.params.id
 
+    //buscar pelo id e trazer todas as infos. menos a senha
+    const user = await User.findById(id, '-password')
+
+    if (!user) {
+        return res.status(422).send({ message: "Não encontramos nenhum cadastro com a informação passada." })
+    }
+
+    res.status(200).json({
+        user
+    })
+}
+const register = async(req, res) => {
     const { name, email, password } = req.body
 
     try {
@@ -30,13 +42,16 @@ const register = async (req, res) => {
             password
         })
 
-        //Tratar o campo password  para ser criptogradado
+        //tratar o campo password para ser criptografado
         const passwordHashed = await hashPassword(newUser.password, res)
 
         newUser.password = passwordHashed
 
         const saveUser = await newUser.save()
-        res.status(201).json({ message: "Cadastro feito com sucesso", saveUser })
+        res.status(201).json({
+            messagem: "Pessoa cadastrada com sucesso",
+            saveUser
+        })
 
     } catch (error) {
         res.status(500).json({
@@ -44,7 +59,6 @@ const register = async (req, res) => {
         })
     }
 }
-
 
 const login = async(req, res) => {
     const { email, password } = req.body;
@@ -61,21 +75,24 @@ const login = async(req, res) => {
         }
 
         const secret = process.env.SECRET
-        const token = jwt.sign({
-            id: user._id
-        }, secret)
+        const token = jwt.sign({ id: user._id }, secret)
+
         res.status(200).json({
-            message: "Token deu bom",
+            message: "Token deu bom!",
             token
         })
 
     } catch (error) {
         res.status(500).json({
-            message: erro.message
+            message: error.message
         })
     }
 }
 
+
 module.exports = {
-    getAll, register, login
+    getAll,
+    getUsers,
+    register,
+    login
 }

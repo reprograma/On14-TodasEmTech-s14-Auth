@@ -1,8 +1,6 @@
-const app = require("./src/app");
+const app = require('./src/app');
 
-const port = process.env.PORT;
+const PORT = process.env.PORT
+console.log(PORT)
 
-app.listen(port, () => console.log(`Servidor está rodando na porta ${port}`));
-
-
-//mongodb+srv://carol:jpR58WhJL3TgZY3B@cluster0.htwiq.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+app.listen(PORT, () => console.log(`Servidor está rodando na porta ${PORT}`))

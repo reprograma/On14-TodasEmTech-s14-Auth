@@ -1,27 +1,16 @@
-//helpers criados para diversos contextos usados de hash
-const bcrypt = require("bcrypt")
+const bcrypt = require('bcrypt')
 
-exports.hashPassword = async (password, res) => {
-    
-    try{const salt = await bcrypt.genSalt(10)
-    const hashPassword = await bcrypt.hash(password, salt)
+exports.hashPassword = async(password, res) => {
+    try {
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
 
-    return hashPassword
+        return hash
 
-    
-    }catch(error){
-        console.log(error);
+    } catch (error) {
+        console.log(error)
         res.status(500).json({
-            message: error.message
+            messagem: message.error
         })
     }
 }
-
-/*
-Ou
-const hasPassword
-
-
-
-password: 1234 --> password: huasdA&S¨D (10 Caracteres)
-*/
