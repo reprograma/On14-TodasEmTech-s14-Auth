@@ -1,8 +1,12 @@
+
 const express = require("express")
 const router = express.Router()
-const controller = require("../controller/colaboradorasController")
+const controller = require("../controller/tarefasController")
 
 router.get("/", controller.getAll)
-router.post("/", controller.postColaboradora)
+router.post("/criar", controller.postTarefa)
+
+
+
 
 module.exports = router;
