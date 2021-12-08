@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose');  
 
 //schema são as propriedades que irão compor a estrutura do documento no banco de dados, aqui podemos definir os tipos de valores, nomes dos campos, entre outras configurações.
 
@@ -16,6 +16,4 @@ const colaboradorasSchema = new mongoose.Schema({
 const colaboradoras = mongoose.model('colaboradoras', colaboradorasSchema);
 
 module.exports = colaboradoras;
-
-
 
